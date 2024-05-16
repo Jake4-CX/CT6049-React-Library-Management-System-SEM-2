@@ -5,6 +5,9 @@ import { LibraryBig } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAppSelector } from "@/redux/store";
 import ThemeToggleComponent from "./themeToggle";
+import { removeLocalStoredTokens, removeLocalStoredUser } from "@/api/authentication";
+import { useDispatch } from "react-redux";
+import { setTokens, setUser } from "@/redux/features/user-slice";
 
 const NavbarComponent: React.FC = () => {
 
@@ -40,6 +43,7 @@ const NavbarComponent: React.FC = () => {
 
 const LoginProfileComponent: React.FC = () => {
 
+  const dispatch = useDispatch();
   const userRedux = useAppSelector((state) => state.userReduser.value);
 
   return (
@@ -73,9 +77,8 @@ const LoginProfileComponent: React.FC = () => {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Support</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
+                  <DropdownMenuItem onClick={logoutUser}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenuPortal>
             </DropdownMenu>
@@ -96,6 +99,18 @@ const LoginProfileComponent: React.FC = () => {
       }
     </>
   )
+
+  function logoutUser() {
+    
+    removeLocalStoredUser();
+    removeLocalStoredTokens();
+  
+    dispatch(setUser(undefined));
+    dispatch(setTokens(undefined));
+
+    // refresh page to clear state
+    window.location.reload();
+  }
 }
 
 export default NavbarComponent;
