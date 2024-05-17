@@ -33,6 +33,7 @@ const NavbarComponent: React.FC = () => {
             </div>
           </form> */}
           </div>
+          <ThemeToggleComponent />
           <LoginProfileComponent />
         </div>
       </header>
@@ -85,7 +86,6 @@ const LoginProfileComponent: React.FC = () => {
           </>
         ) : (
           <>
-            <ThemeToggleComponent />
             <Link to="/login">
               <Button
                 size={"default"}
