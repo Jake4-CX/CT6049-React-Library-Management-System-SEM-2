@@ -10,6 +10,8 @@ import { ThemeProvider } from './components/themeProvider';
 import LandingPage from './views/landing';
 import LoginPage from './views/authentication/login';
 import RegisterPage from './views/authentication/register';
+import RequireAuth from './routes/features/RequireAuth';
+import DashboardPage from './views/dashboard';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +21,12 @@ const router = createBrowserRouter(
       {/* Authentication */}
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />
+
+      {/* Dashboard - Requires role */}
+      <Route element={<RequireAuth allowedRoles={['FINANCE_DIRECTOR', 'CHIEF_LIBRARIAN', 'LIBRARIAN', 'USER']} />}>
+        <Route path="dashboard" element={<DashboardPage />} />
+      </Route>
+
     </Route>
   )
 )

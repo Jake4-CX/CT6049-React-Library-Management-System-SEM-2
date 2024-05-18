@@ -1,10 +1,10 @@
 import api from "../axios";
 
-export function loginUser(credentials: { userEmail: string; userPassword: string }) {
+export function loginUser(credentials: { userEmail: string, userPassword: string }) {
   return api.post(`/users/login`, credentials);
 }
 
-export function registerUser(credentials: { userEmail: string; userPassword: string }) {
+export function registerUser(credentials: { userEmail: string, userPassword: string, userRole: string }) {
   return api.post(`/users/register`, credentials);
 }
 
