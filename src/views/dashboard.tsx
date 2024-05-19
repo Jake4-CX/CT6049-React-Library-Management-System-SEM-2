@@ -23,11 +23,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { getAverageBooksPerAuthor, getAverageBooksPerCategory, getAverageLoanDurationLastDuration, getAverageLoanDurationLastYear, getAverageTimeToPayFine, getPercentageBooksCurrentlyOverdue, getPercentageBooksReturnedLate } from "@/api/chief-librarian";
+import { getAverageBooksPerAuthor, getAverageBooksPerCategory, getAverageLoanDurationLastDuration, getAverageTimeToPayFine, getPercentageBooksCurrentlyOverdue, getPercentageBooksReturnedLate } from "@/api/chief-librarian";
 import { AxiosResponse } from "axios";
 import { RefreshCw } from "lucide-react";
-import { getAverageFinesLast30Days, getPercentageUnpaidFines, getPopularAuthorUnpaidFines, getPopularCategoryUnpaidFines, getTotalUnpaidFines } from "@/api/finance-director";
-import { getAverageBooksLoanedLastQuarter, getMostPopularAuthorCurrentlyLoaned, getMostPopularCategoryCurrentlyLoaned, getPercentageBooksCurrentlyLoaned } from "@/api/librarian";
+import { AverageCostEachFinesPaidLastDuration, getPercentageUnpaidFines, getPopularAuthorUnpaidFines, getPopularCategoryUnpaidFines, getTotalUnpaidFines } from "@/api/finance-director";
+import { getAuthorsPerCategory, getAverageBooksLoanedLastDuration, getBooksPerCategory, getMostPopularAuthorCurrentlyLoaned, getMostPopularCategoryCurrentlyLoaned, getPercentageBooksCurrentlyLoaned } from "@/api/librarian";
 import AnswerComponent from "@/components/views/dashboard/answerComponents/answerComponent";
 import { DecisionMakerQuestion } from "@/types/dashboard";
 
@@ -137,7 +137,7 @@ const DashboardPage: React.FC = () => {
                 )
               }</Button>
             </div>
-            <div className="mt-3 max-h-[65%] md:h-[80%]">
+            <div className="mt-3 max-h-[65%] md:h-[80%] h-fit">
               {
                 isPending ? (
                   <Card className="min-h-[6rem] h-full w-full overflow-hidden flex justify-center items-center">
@@ -327,12 +327,13 @@ const financeDirectorDecisionMakerQuestions = [
     answerComponent: AnswerComponent,
     queryFunction: getPopularAuthorUnpaidFines
   }, {
-    question: "What is the average amount of fines paid in the last 30 days?",
+    question: "What is the average cost of fines paid in the last ...?",
     accountRole: "FINANCE_DIRECTOR",
-    answerText: "The average amount of fines paid in the last 30 days is: %VALUE%",
+    questionType: "DURATION",
+    answerText: "The average cost of each fine paid in the specified period is: %VALUE%",
     answerType: "NUMBER",
     answerComponent: AnswerComponent,
-    queryFunction: getAverageFinesLast30Days
+    queryFunction: AverageCostEachFinesPaidLastDuration
   }, {
     question: "What is the percentage of fines that are unpaid?",
     accountRole: "FINANCE_DIRECTOR",
@@ -374,8 +375,9 @@ const chiefLibrarianDecisionMakerQuestions = [
     answerComponent: AnswerComponent,
     queryFunction: getAverageLoanDurationLastDuration
   }, {
-    question: "What is the average time it takes for users to pay their fines?",
+    question: "What is the average time it takes for users to pay their fines in the last ...?",
     accountRole: "CHIEF_LIBRARIAN",
+    questionType: "DURATION",
     answerText: "The average time it takes for users to pay their fines is: %VALUE%",
     answerType: "DURATION",
     answerComponent: AnswerComponent,
@@ -399,12 +401,13 @@ const chiefLibrarianDecisionMakerQuestions = [
 
 const librarianDecisionMakerQuestions = [
   {
-    question: "What is the average number of books borrowed by each user during the last quarter?",
+    question: "What is the average number of books borrowed by each user during the last ...?",
     accountRole: "LIBRARIAN",
+    questionType: "DURATION",
     answerText: "The average number of books borrowed by each user during the last quarter is: %VALUE%",
     answerType: "NUMBER",
     answerComponent: AnswerComponent,
-    queryFunction: getAverageBooksLoanedLastQuarter
+    queryFunction: getAverageBooksLoanedLastDuration
   }, {
     question: "What is the most popular author with currently loaned books?",
     accountRole: "LIBRARIAN",
@@ -426,6 +429,20 @@ const librarianDecisionMakerQuestions = [
     answerType: "PERCENTAGE",
     answerComponent: AnswerComponent,
     queryFunction: getPercentageBooksCurrentlyLoaned
+  }, {
+    question: "What is the amount of books per category?",
+    accountRole: "LIBRARIAN",
+    answerText: "The amount of books per category is: %VALUE%",
+    answerType: "PIE_CHART",
+    answerComponent: AnswerComponent,
+    queryFunction: getBooksPerCategory
+  }, {
+    question: "What is the amount of authors per category?",
+    accountRole: "LIBRARIAN",
+    answerText: "The amount of authors per category is: %VALUE%",
+    answerType: "PIE_CHART",
+    answerComponent: AnswerComponent,
+    queryFunction: getAuthorsPerCategory
   }
 ] as DecisionMakerQuestion[];
 

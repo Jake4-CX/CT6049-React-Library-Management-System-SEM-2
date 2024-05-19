@@ -8,8 +8,8 @@ export function getPopularAuthorUnpaidFines() {
   return api.get(`/finance-director/popular/unpaid/author`);
 }
 
-export function getAverageFinesLast30Days() {
-  return api.get(`/finance-director/average/fines/30days`);
+export function AverageCostEachFinesPaidLastDuration(duration: number) {
+  return api.get(`/finance-director/average/fines/duration/${duration}`);
 }
 
 export function getPercentageUnpaidFines() {

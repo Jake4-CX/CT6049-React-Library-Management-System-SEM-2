@@ -1,7 +1,7 @@
 import api from "../axios";
 
-export function getAverageBooksLoanedLastQuarter() {
-  return api.get(`/librarian/average/borrowed-books/quarter`);
+export function getAverageBooksLoanedLastDuration(duration: number) {
+  return api.get(`/librarian/average/borrowed-books/duration/${duration}`);
 }
 
 export function getMostPopularAuthorCurrentlyLoaned() {
@@ -14,4 +14,12 @@ export function getMostPopularCategoryCurrentlyLoaned() {
 
 export function getPercentageBooksCurrentlyLoaned() {
   return api.get(`/librarian/percentage/currently-loaned/`);
+}
+
+export function getBooksPerCategory() {
+  return api.get(`/librarian/books-per-category`);
+}
+
+export function getAuthorsPerCategory() {
+  return api.get(`/librarian/authors-per-category`);
 }
